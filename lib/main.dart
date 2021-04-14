@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(App());
@@ -95,7 +96,10 @@ class _LogInPageState extends State<LogInPage> {
                     Text('Don\'t have an account? '),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => SignUpPage()));
+                        Navigator.of(context).pushReplacement(
+                            new MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    SignUpPage()));
                       },
                       child: Text(
                         'Sign Up',
@@ -272,7 +276,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     Text('Already have an account? '),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => LogInPage()));
+                        Navigator.of(context).pushReplacement(
+                            new MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    LogInPage()));
                       },
                       child: Text(
                         'Log In',
@@ -464,13 +471,38 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen>
   @override
   bool get wantKeepAlive => true;
 
+  String dateToVerbose(DateTime d) {
+    final DateFormat formatter = DateFormat('EEEE, MMMM d, y');
+    return formatter.format(d);
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    var now = DateTime.now();
     return Container(
       child: SingleChildScrollView(
         child: Center(
           child: Column(children: <Widget>[
+            Container(
+                width: double.infinity,
+                margin: EdgeInsets.all(10),
+                child: Card(
+                    child: Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Column(
+                    children: <Widget>[
+                      Text(dateToVerbose(now),
+                          style: TextStyle(
+                            fontSize: 28,
+                          )),
+                      Text('Day 4',
+                          style: TextStyle(
+                            fontSize: 28,
+                          )),
+                    ],
+                  ),
+                ))),
             AnnouncementWidget(Announcement(
               title: 'THIS IS AN ANNOUNCEMENT',
               from: 'TOOLMAC ADMINS',
@@ -646,9 +678,7 @@ class _TimetableScreenState extends State<TimetableScreen>
 
   _TimetableScreenState({this.timetable = const Timetable()});
 
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
+  Widget viewTimetable(BuildContext context) {
     var sem = timetable.semester;
     return Container(
       margin: EdgeInsets.all(10.0),
@@ -706,7 +736,10 @@ class _TimetableScreenState extends State<TimetableScreen>
             padding: EdgeInsets.only(top: 25),
             child: ElevatedButton(
               child: Text('Edit Timetable'),
-              onPressed: () {},
+              onPressed: () {
+                editing = true;
+                setState(() {});
+              },
               style: ButtonStyle(
                 minimumSize: MaterialStateProperty.all(Size(180, 50)),
               ),
@@ -717,7 +750,28 @@ class _TimetableScreenState extends State<TimetableScreen>
     );
   }
 
+  Widget editTimetable(BuildContext context) {
+    return Text('NOT YET IMPLEMENTED');
+    /*
+    return Container(
+      margin: EdgeInsets.all(10.0),
+      child: 
+    );
+    */
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    if (editing) {
+      return editTimetable(context);
+    } else {
+      return viewTimetable(context);
+    }
+  }
+
   Timetable timetable;
+  bool editing = false;
 }
 
 class CalendarScreen extends StatefulWidget {
