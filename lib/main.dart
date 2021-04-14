@@ -49,14 +49,19 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       appBar: AppBar(
         title: Text('ToolMac'),
       ),
-      body: TabBarView(
-        controller: _controller,
-        children: <Widget>[
-          AnnouncementsScreen(),
-          TimetableScreen(),
-          CalendarScreen(),
-          SettingsScreen(),
-        ],
+      body: new GestureDetector(
+        onTap: () => {
+          FocusScope.of(context).requestFocus(new FocusNode())
+        },
+        child: TabBarView(
+          controller: _controller,
+          children: <Widget>[
+            AnnouncementsScreen(),
+            TimetableScreen(),
+            CalendarScreen(),
+            SettingsScreen(),
+          ],
+        )
       ),
       bottomNavigationBar: Container(
         child: Material(
@@ -77,7 +82,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 icon: Icon(Icons.calendar_today),
               ),
               Tab(
-                text: 'Settings',
+                text: 'Profile',
                 icon: Icon(Icons.settings),
               ),
             ],
@@ -159,53 +164,51 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> with Automati
     super.build(context);
     return Container(
       child: SingleChildScrollView(
-        child: Stack(
-          children: <Widget>[
-            Center(
-              child: Column(children: <Widget>[
-                AnnouncementWidget(Announcement(
-                  title: 'THIS IS AN ANNOUNCEMENT',
-                  from: 'TOOLMAC ADMINS',
-                  created: DateTime.now(),
-                  content: 'This is a test.',
-                )),
-                AnnouncementWidget(Announcement(
-                  title: 'THIS IS AN ANNOUNCEMENT',
-                  from: 'TOOLMAC ADMINS',
-                  created: DateTime.now(),
-                  content: '''Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ut sodales quam. Nam sollicitudin, ex id accumsan commodo, nisi tellus facilisis leo, a egestas elit erat at risus. Maecenas tempus id magna ac pulvinar. Nullam vestibulum suscipit venenatis. Quisque ac eros gravida, finibus odio eget, blandit purus. Donec eget arcu vitae libero laoreet egestas eget nec purus. Ut vel nunc lorem. Sed vel commodo dui, ac aliquam dui. Morbi elementum dignissim placerat.
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              AnnouncementWidget(Announcement(
+                title: 'THIS IS AN ANNOUNCEMENT',
+                from: 'TOOLMAC ADMINS',
+                created: DateTime.now(),
+                content: 'This is a test.',
+              )),
+              AnnouncementWidget(Announcement(
+                title: 'THIS IS AN ANNOUNCEMENT',
+                from: 'TOOLMAC ADMINS',
+                created: DateTime.now(),
+                content: '''Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ut sodales quam. Nam sollicitudin, ex id accumsan commodo, nisi tellus facilisis leo, a egestas elit erat at risus. Maecenas tempus id magna ac pulvinar. Nullam vestibulum suscipit venenatis. Quisque ac eros gravida, finibus odio eget, blandit purus. Donec eget arcu vitae libero laoreet egestas eget nec purus. Ut vel nunc lorem. Sed vel commodo dui, ac aliquam dui. Morbi elementum dignissim placerat.
 
-Suspendisse a nunc quis sapien auctor tincidunt. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin maximus quam sed ligula facilisis efficitur. Mauris viverra libero at tristique mattis. Suspendisse eget lobortis est. Quisque a vestibulum velit. In odio lacus, pellentesque ac risus id, consequat fringilla lorem.
+  Suspendisse a nunc quis sapien auctor tincidunt. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin maximus quam sed ligula facilisis efficitur. Mauris viverra libero at tristique mattis. Suspendisse eget lobortis est. Quisque a vestibulum velit. In odio lacus, pellentesque ac risus id, consequat fringilla lorem.
 
-Etiam sollicitudin porta ligula eu pretium. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus suscipit pharetra turpis, quis pellentesque leo volutpat id. Morbi sed cursus dui. Vestibulum feugiat velit id arcu venenatis, et sodales diam facilisis. Suspendisse tristique maximus vehicula. In ac blandit sem. Aliquam erat volutpat. Vestibulum risus dolor, volutpat sit amet est a, euismod consectetur ante. Nam congue lobortis risus ac auctor. Nunc bibendum maximus laoreet. Donec commodo fringilla purus, eget aliquam enim convallis at. Phasellus vehicula ac est sed interdum.''',
-                )),
-                AnnouncementWidget(Announcement(
-                  title: 'THIS IS AN ANNOUNCEMENT',
-                  from: 'TOOLMAC ADMINS',
-                  created: DateTime.now(),
-                  content: 'This is a test.',
-                )),
-                AnnouncementWidget(Announcement(
-                  title: 'THIS IS AN ANNOUNCEMENT',
-                  from: 'TOOLMAC ADMINS',
-                  created: DateTime.now(),
-                  content: 'This is a test.',
-                )),
-                AnnouncementWidget(Announcement(
-                  title: 'THIS IS AN ANNOUNCEMENT',
-                  from: 'TOOLMAC ADMINS',
-                  created: DateTime.now(),
-                  content: 'This is a test.',
-                )),
-                AnnouncementWidget(Announcement(
-                  title: 'THIS IS AN ANNOUNCEMENT',
-                  from: 'TOOLMAC ADMINS',
-                  created: DateTime.now(),
-                  content: 'This is a test.',
-                )),
-              ]),
-            ),
-          ],
+  Etiam sollicitudin porta ligula eu pretium. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus suscipit pharetra turpis, quis pellentesque leo volutpat id. Morbi sed cursus dui. Vestibulum feugiat velit id arcu venenatis, et sodales diam facilisis. Suspendisse tristique maximus vehicula. In ac blandit sem. Aliquam erat volutpat. Vestibulum risus dolor, volutpat sit amet est a, euismod consectetur ante. Nam congue lobortis risus ac auctor. Nunc bibendum maximus laoreet. Donec commodo fringilla purus, eget aliquam enim convallis at. Phasellus vehicula ac est sed interdum.''',
+              )),
+              AnnouncementWidget(Announcement(
+                title: 'THIS IS AN ANNOUNCEMENT',
+                from: 'TOOLMAC ADMINS',
+                created: DateTime.now(),
+                content: 'This is a test.',
+              )),
+              AnnouncementWidget(Announcement(
+                title: 'THIS IS AN ANNOUNCEMENT',
+                from: 'TOOLMAC ADMINS',
+                created: DateTime.now(),
+                content: 'This is a test.',
+              )),
+              AnnouncementWidget(Announcement(
+                title: 'THIS IS AN ANNOUNCEMENT',
+                from: 'TOOLMAC ADMINS',
+                created: DateTime.now(),
+                content: 'This is a test.',
+              )),
+              AnnouncementWidget(Announcement(
+                title: 'THIS IS AN ANNOUNCEMENT',
+                from: 'TOOLMAC ADMINS',
+                created: DateTime.now(),
+                content: 'This is a test.',
+              )),
+            ]
+          ),
         ),
       ),
     );
@@ -303,6 +306,113 @@ class _SettingsScreenState extends State<SettingsScreen> with AutomaticKeepAlive
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Center(child: Text('Hello, World!'));
+    return Container(
+      margin: EdgeInsets.all(10),
+      padding: EdgeInsets.all(10),
+      child: Center(
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Username: ',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  'BattleMage0231',
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: 24,
+                  ),
+                ),
+              ]
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Email: ',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  'leyang.zou@student.tdsb.on.ca',
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: 24,
+                  ),
+                ),
+              ]
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'First Name: ',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  'Leyang',
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: 24,
+                  ),
+                ),
+              ]
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Last Name: ',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  'Zou',
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: 24,
+                  ),
+                ),
+              ]
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: ElevatedButton(
+                child: Text('Reset Password'),
+                onPressed: () {},
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                  minimumSize: MaterialStateProperty.all(Size(180, 50)),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 10),
+              child: ElevatedButton(
+                child: Text('Change Username'),
+                onPressed: () {},
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                  minimumSize: MaterialStateProperty.all(Size(180, 50)),
+                ),
+              ),                 
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
