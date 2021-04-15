@@ -25,6 +25,8 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen>
   Widget build(BuildContext context) {
     super.build(context);
     var now = DateTime.now();
+    var inputFormat = DateFormat("dd-MM-yyyy");
+    int diff = DateTime.now().day - inputFormat.parse(globalStorage['calendar'][0]['date']).day;
     return Container(
       child: SingleChildScrollView(
         child: Center(
@@ -42,8 +44,7 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen>
                             fontSize: 28,
                           )),
                       Text(
-                          'Day ' +
-                              '4'/*globalStorage['calendar'][0]['day'].toString()*/,
+                          'Day ' + globalStorage['calendar'][diff]['day'].toString(),
                           style: TextStyle(
                             fontSize: 28,
                           ))

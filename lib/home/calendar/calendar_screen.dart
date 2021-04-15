@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
 
 import 'calendar.dart';
 import '../../util/storage.dart';
@@ -23,9 +24,11 @@ class _CalendarScreenState extends State<CalendarScreen>
     if (day == null) {
       return [];
     }
-    int diff = day.day - DateTime.parse(globalStorage['calendar'][0]['date']).day;
+    var inputFormat = DateFormat("dd-MM-yyyy");
+    int diff = day.day - inputFormat.parse(globalStorage['calendar'][0]['date']).day;
     List<Event> list = [Event('Day ' + globalStorage['calendar'][diff]['day'].toString())];
-    list.addAll(globalStorage['calendar'][diff].events.map((e) => {Event(e['name'])}).toList());
+    var d = ((globalStorage['calendar'][diff]['events'] as List<dynamic>).map((dynamic e) => Event(e['name'])).toList());
+    list.addAll(d);
     return list;
   }
 
@@ -35,10 +38,11 @@ class _CalendarScreenState extends State<CalendarScreen>
     print(globalStorage['calendar']);
     print(globalStorage['calendar'][0]);
     print(globalStorage['calendar'][0]['date']);
+    var inputFormat = DateFormat("dd-MM-yyyy");
     return Column(children: [
       TableCalendar<Event>(
-        firstDay: DateTime.parse(globalStorage['calendar'][0]['date']),
-        lastDay: DateTime.parse(globalStorage['calendar'][globalStorage['calendar'].length - 1]['date']),
+        firstDay: inputFormat.parse(globalStorage['calendar'][0]['date']),
+        lastDay: inputFormat.parse(globalStorage['calendar'][globalStorage['calendar'].length - 1]['date']),
         focusedDay: _focusedDay,
         selectedDayPredicate: (day) {
           return isSameDay(_selectedDay, day);
