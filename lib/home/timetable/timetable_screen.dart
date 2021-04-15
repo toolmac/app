@@ -205,7 +205,6 @@ class _TimetableScreenState extends State<TimetableScreen>
   }
 
   Widget editTimetable(BuildContext context) {
-    _TimetableScreenState tt = this;
     print('Edit timetable called with ');
     if (specific >= 0) {
       print(input.entries[specific].periods.map((p) => p.roomCode).toList());
@@ -453,23 +452,8 @@ class _TimetableScreenState extends State<TimetableScreen>
                                     ElevatedButton(
                                       child: Icon(Icons.remove),
                                       onPressed: () {
-                                        print('VVVVVVVVVVVVVVVVVVVV');
-                                        print(input.entries[specific].periods
-                                            .mapIndexed(((TimetablePeriod p,
-                                                    int index) =>
-                                                p.roomCode))
-                                            .toList());
-                                        print(input.entries[specific].periods
-                                            .mapIndexed(((TimetablePeriod p,
-                                                    int index) =>
-                                                index))
-                                            .toList());
                                         input.entries[specific].periods
                                             .removeAt(index);
-                                        print(input.entries[specific].periods
-                                            .map((p) => p.roomCode)
-                                            .toList());
-                                        print('');
                                         setState(() {});
                                       },
                                       style: ButtonStyle(
@@ -507,6 +491,7 @@ class _TimetableScreenState extends State<TimetableScreen>
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
+                            _formKey.currentState!.reset();
                             timetable = Timetable.clone(input);
                             specific = -1;
                             setState(() {});
@@ -520,6 +505,7 @@ class _TimetableScreenState extends State<TimetableScreen>
                       ElevatedButton(
                         child: Text('Quit'),
                         onPressed: () {
+                          _formKey.currentState!.reset();
                           specific = -1;
                           input = Timetable.clone(timetable);
                           setState(() {});

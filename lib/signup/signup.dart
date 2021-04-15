@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import '../login/login.dart';
+import '../verify/verify.dart';
+import '../util/fetch.dart';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key? key}) : super(key: key);
@@ -12,17 +15,22 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   void register(String username, String password, String email,
       String firstName, String lastName) {
-    // check something here
-    if (false) {
-      failedMsg = 'Registeration failed! Please try again later.';
+    Future<http.Response> res = postSignUp(username, password, firstName, lastName, email);
+    res.then(
+      (http.Response response) {
+        if(response.statusCode != 200) {
+          failedMsg = response.body;
+          setState(() {});
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Registeration complete! Please verify your email before logging in.')));
+          Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => VerifyPage()));
+        }
+      },
+    ).catchError((error) {
+      failedMsg = error;
       setState(() {});
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-              'Registeration complete! Please verify your email before logging in')));
-      Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (BuildContext context) => LogInPage()));
-    }
+    });
   }
 
   @override
@@ -130,7 +138,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 padding: EdgeInsets.only(top: 10),
                 child: Row(
                   children: <Widget>[
-                    Text('Already have an account? '),
+                    Text('Already have an account? ', style: TextStyle(fontSize: 18)),
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushReplacement(
@@ -141,6 +149,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: Text(
                         'Log In',
                         style: TextStyle(
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

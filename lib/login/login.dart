@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import '../signup/signup.dart';
+import '../verify/verify.dart';
 import '../home/home.dart';
+import '../util/fetch.dart';
+import '../util/storage.dart';
 
 class LogInPage extends StatefulWidget {
   LogInPage({Key? key}) : super(key: key);
@@ -11,15 +16,34 @@ class LogInPage extends StatefulWidget {
 }
 
 class _LogInPageState extends State<LogInPage> {
-  void logIn(String username, String password, BuildContext context) {
-    // check something here
-    if (false) {
-      failedMsg = 'Login failed! Please try again later.';
+  void logIn(String email, String password, BuildContext context) {
+    Future<http.Response> res = postLogIn(email, password);
+    res.then(
+      (http.Response response) {
+        if(response.statusCode != 200) {
+          if(response.body == '\"Verification required\"') {
+            Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => VerifyPage()));
+          } else {
+            failedMsg = response.body;
+            setState(() {});
+          }
+        } else {
+          print(response.body);
+          //Map<String, dynamic> data = jsonDecode(response.body);
+          //print('hi');
+          //String token = data["accessToken"];
+          //String refresh = data["refreshToken"];
+          //Future<void> first = storage.write(key: 'token', value: token);
+          //Future<void> second = storage.write(key: 'refresh', value: refresh);
+          //Future.wait([first, second]).then((res) {
+            Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+          //});
+        }
+      },
+    ).catchError((error) {
+      failedMsg = error;
       setState(() {});
-    } else {
-      Navigator.of(context).pushReplacement(
-          new MaterialPageRoute(builder: (BuildContext context) => HomePage()));
-    }
+    });
   }
 
   @override
@@ -74,7 +98,7 @@ class _LogInPageState extends State<LogInPage> {
                 padding: EdgeInsets.only(top: 10),
                 child: Row(
                   children: <Widget>[
-                    Text('Don\'t have an account? '),
+                    Text('Don\'t have an account? ', style: TextStyle(fontSize: 18)),
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushReplacement(
@@ -85,6 +109,7 @@ class _LogInPageState extends State<LogInPage> {
                       child: Text(
                         'Sign Up',
                         style: TextStyle(
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
