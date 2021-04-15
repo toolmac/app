@@ -41,19 +41,20 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen>
                           style: TextStyle(
                             fontSize: 28,
                           )),
-                      Text('Day 4',
+                      Text(
+                          'Day ' +
+                              '4'/*globalStorage['calendar'][0]['day'].toString()*/,
                           style: TextStyle(
                             fontSize: 28,
-                          )),
+                          ))
                     ],
                   ),
                 ))),
             Column(
               children: [
-                /*
-                for (var announcement in globalStorage['announcements'])
-                  AnnouncementWidget(announcement as Announcement),
-                */
+                for (var announcement
+                    in (globalStorage['announcements'] as List<Announcement>))
+                  AnnouncementWidget(announcement),
               ],
             ),
           ]),

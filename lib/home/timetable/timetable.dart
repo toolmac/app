@@ -22,8 +22,10 @@ class TimetablePeriod {
     return TimetablePeriod(
       day: json['day'],
       periodName: json['periodName'],
-      start: TimeOfDay.fromDateTime(DateTime.fromMillisecondsSinceEpoch(json['start'])),
-      end: TimeOfDay.fromDateTime(DateTime.fromMillisecondsSinceEpoch(json['end'])),
+      start: TimeOfDay.fromDateTime(
+          DateTime.fromMillisecondsSinceEpoch(json['start'])),
+      end: TimeOfDay.fromDateTime(
+          DateTime.fromMillisecondsSinceEpoch(json['end'])),
       roomCode: json['roomCode'],
     );
   }
@@ -32,8 +34,8 @@ class TimetablePeriod {
     return {
       'day': day,
       'periodName': periodName,
-      'start': DateTime(0, 0, 0, start.hour, start.minute),
-      'end': DateTime(0, 0, 0, end.hour, end.minute),
+      'start': DateTime(0, 0, 0, start.hour, start.minute).millisecondsSinceEpoch,
+      'end': DateTime(0, 0, 0, end.hour, end.minute).millisecondsSinceEpoch,
       'roomCode': roomCode,
     };
   }
@@ -53,15 +55,21 @@ class TimetableEntry {
     return TimetableEntry(
       courseCode: other.courseCode,
       teacher: other.teacher,
-      periods: other.periods.map((TimetablePeriod p) => TimetablePeriod.clone(p)).toList(),
+      periods: other.periods
+          .map((TimetablePeriod p) => TimetablePeriod.clone(p))
+          .toList(),
     );
   }
 
   factory TimetableEntry.parse(Map<String, dynamic> json) {
+    print(json);
+    var periods = (json['periods'] as List<dynamic>)
+        .map((period) => TimetablePeriod.parse(period as Map<String, dynamic>))
+        .toList();
     return TimetableEntry(
       courseCode: json['courseCode'],
       teacher: json['teacher'],
-      periods: json['periods'].map((period) => TimetablePeriod.parse(period)).toList(),
+      periods: periods,
     );
   }
 
@@ -84,14 +92,18 @@ class Timetable {
   factory Timetable.clone(Timetable other) {
     return Timetable(
       semester: other.semester,
-      entries: other.entries.map((TimetableEntry e) => TimetableEntry.clone(e)).toList(),
+      entries: other.entries
+          .map((TimetableEntry e) => TimetableEntry.clone(e))
+          .toList(),
     );
   }
 
   factory Timetable.parse(Map<String, dynamic> json) {
     return Timetable(
       semester: json['semester'],
-      entries: json['entries'].map((entry) => TimetableEntry.parse(entry)).toList(),
+      entries: (json['entries'] as List<dynamic>)
+          .map((entry) => TimetableEntry.parse(entry as Map<String, dynamic>))
+          .toList(),
     );
   }
 

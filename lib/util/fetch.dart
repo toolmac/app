@@ -79,7 +79,7 @@ Future<http.Response> getProfile() async {
 
 Future<http.Response> getAnnouncements(int amt) async {
   var value = await postAuth('/announcements/get', jsonEncode({
-    //'amount': amt,
+    'amount': amt,
   }));
   print(value.body);
   if(value.statusCode == 403 || value.statusCode == 401) {
@@ -88,7 +88,7 @@ Future<http.Response> getAnnouncements(int amt) async {
     return value;
   }
   return postAuth('/announcements/get', jsonEncode({
-    //'amount': amt,
+    'amount': amt,
   }));
 }
 
@@ -128,9 +128,11 @@ Future<http.Response> getTimetable() async {
 }
 
 Future<void> postTimetable(Timetable t) async {
-  var value = await postAuth('/timetable/post', jsonEncode({
+  var value = await postAuth('/timetable/edit', jsonEncode({
     'timetable': jsonEncode(t.toJson()),
   }));
+  print('POST CODE:');
+  print(value.statusCode);
   if(value.statusCode == 403 || value.statusCode == 401) {
     await refresh();
   } else {

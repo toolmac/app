@@ -33,8 +33,9 @@ class _LogInPageState extends State<LogInPage> {
           String refresh = data["refreshToken"];
           globalStorage['token'] = token;
           globalStorage['refresh'] = refresh;
-          init();
-          Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+          init().then((res) {
+            Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+          });
         }
       },
     ).catchError((error) {

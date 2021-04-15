@@ -13,13 +13,8 @@ Future<void> init() async {
   print(res.body);
   globalStorage['profile'] = jsonDecode(res.body);
   // announcements
-  /*
   var res2 = await getAnnouncements(100);
   print(res2.body);
-  print(globalStorage);
-  */
-  /*
-  globalStorage['announcements'] = <Announcement>[];
   print(globalStorage);
   var res3 = jsonDecode(res2.body);
   globalStorage['announcements'] = <Announcement>[];
@@ -30,15 +25,16 @@ Future<void> init() async {
         created: DateTime.fromMillisecondsSinceEpoch(entry['timestamp']),
         content: entry['content']));
   }
-  */
   // calendar
   var res4 = await getCalendar(DateTime.now(), 31);
   globalStorage['calendar'] = jsonDecode(res4.body);
   // timetable
   var res5 = await getTimetable();
   if(res5.statusCode != 200) {
+    print(res5.statusCode);
     globalStorage['timetable'] = Timetable(semester: 3, entries: []).toJson();
   } else {
     globalStorage['timetable'] = jsonDecode(res5.body);
   }
+  print(globalStorage['timetable']);
 }

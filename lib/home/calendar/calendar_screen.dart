@@ -24,7 +24,7 @@ class _CalendarScreenState extends State<CalendarScreen>
       return [];
     }
     int diff = day.day - DateTime.parse(globalStorage['calendar'][0]['date']).day;
-    List<Event> list = [Event('Day ' + globalStorage['calenar'][diff]['day'].toString())];
+    List<Event> list = [Event('Day ' + globalStorage['calendar'][diff]['day'].toString())];
     list.addAll(globalStorage['calendar'][diff].events.map((e) => {Event(e['name'])}).toList());
     return list;
   }
