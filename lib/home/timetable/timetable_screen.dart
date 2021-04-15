@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 import 'timetable.dart';
+import '../../util/storage.dart';
+import '../../util/fetch.dart';
 
 // taken from https://stackoverflow.com/questions/54898767/enumerate-or-map-through-a-list-with-index-and-value-in-dart
 extension ExtendedIterable<E> on Iterable<E> {
@@ -20,88 +23,7 @@ class TimetableScreen extends StatefulWidget {
 
   @override
   _TimetableScreenState createState() => _TimetableScreenState(
-          // test timetable
-          timetable: Timetable(
-        semester: 3,
-        entries: [
-          TimetableEntry(
-            courseCode: 'ICS4U0',
-            teacher: 'Valentina Krasteva',
-            periods: [
-              TimetablePeriod(
-                day: 1,
-                periodName: 'Period 1',
-                start: TimeOfDay.now(),
-                end: TimeOfDay.now(),
-              ),
-              TimetablePeriod(
-                day: 2,
-                periodName: 'Period 1',
-                start: TimeOfDay.now(),
-                end: TimeOfDay.now(),
-                roomCode: '222',
-              ),
-            ],
-          ),
-          TimetableEntry(
-            courseCode: 'ICS4U0',
-            teacher: 'Valentina Krasteva',
-            periods: [
-              TimetablePeriod(
-                day: 1,
-                periodName: 'Period 1',
-                start: TimeOfDay.now(),
-                end: TimeOfDay.now(),
-              ),
-              TimetablePeriod(
-                day: 1,
-                periodName: 'Period 1',
-                start: TimeOfDay.now(),
-                end: TimeOfDay.now(),
-                roomCode: '222',
-              ),
-            ],
-          ),
-          TimetableEntry(
-            courseCode: 'ICS4U0',
-            teacher: 'Valentina Krasteva',
-            periods: [
-              TimetablePeriod(
-                day: 1,
-                periodName: 'Period 1',
-                start: TimeOfDay.now(),
-                end: TimeOfDay.now(),
-              ),
-              TimetablePeriod(
-                day: 1,
-                periodName: 'Period 1',
-                start: TimeOfDay.now(),
-                end: TimeOfDay.now(),
-                roomCode: '222',
-              ),
-            ],
-          ),
-          TimetableEntry(
-            courseCode: 'ICS4U0',
-            teacher: 'Valentina Krasteva',
-            periods: [
-              TimetablePeriod(
-                day: 1,
-                periodName: 'Period 1',
-                start: TimeOfDay.now(),
-                end: TimeOfDay.now(),
-              ),
-              TimetablePeriod(
-                day: 1,
-                periodName: 'Period 1',
-                start: TimeOfDay.now(),
-                end: TimeOfDay.now(),
-                roomCode: '222',
-              ),
-            ],
-          ),
-        ],
-      ));
+      timetable: Timetable.parse(globalStorage['timetable']));
 }
 
 class _TimetableScreenState extends State<TimetableScreen>
@@ -205,19 +127,6 @@ class _TimetableScreenState extends State<TimetableScreen>
   }
 
   Widget editTimetable(BuildContext context) {
-    print('Edit timetable called with ');
-    if (specific >= 0) {
-      print(input.entries[specific].periods.map((p) => p.roomCode).toList());
-      print(input.entries[specific].periods
-          .mapIndexed(((TimetablePeriod p, int index) => p.roomCode))
-          .toList());
-      print(input.entries[specific].periods
-          .mapIndexed(((TimetablePeriod p, int index) => index))
-          .toList());
-    } else {
-      print('Negative:');
-      print(specific);
-    }
     return Container(
       margin: EdgeInsets.all(10),
       child: ListView(
@@ -235,6 +144,7 @@ class _TimetableScreenState extends State<TimetableScreen>
                       input.entries.removeAt(specific);
                       specific = -1;
                       timetable = Timetable.clone(input);
+                      postTimetable(timetable);
                       setState(() {});
                     },
                     style: ButtonStyle(
@@ -493,6 +403,7 @@ class _TimetableScreenState extends State<TimetableScreen>
                             _formKey.currentState!.save();
                             _formKey.currentState!.reset();
                             timetable = Timetable.clone(input);
+                            postTimetable(timetable);
                             specific = -1;
                             setState(() {});
                           }
@@ -554,6 +465,7 @@ class _TimetableScreenState extends State<TimetableScreen>
                         input.entries
                             .add(TimetableEntry(courseCode: '', periods: []));
                         timetable = Timetable.clone(input);
+                        postTimetable(timetable);
                         setState(() {});
                       },
                       style: ButtonStyle(

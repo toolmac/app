@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import 'calendar.dart';
+import '../../util/storage.dart';
 
 class CalendarScreen extends StatefulWidget {
   CalendarScreen({Key? key}) : super(key: key);
@@ -22,21 +23,22 @@ class _CalendarScreenState extends State<CalendarScreen>
     if (day == null) {
       return [];
     }
-    return [
-      Event('SCHOOL DAY'),
-      Event('SCHOOL DAY'),
-      Event('SCHOOL DAY'),
-      Event('SCHOOL DAY')
-    ];
+    int diff = day.day - DateTime.parse(globalStorage['calendar'][0]['date']).day;
+    List<Event> list = [Event('Day ' + globalStorage['calenar'][diff]['day'].toString())];
+    list.addAll(globalStorage['calendar'][diff].events.map((e) => {Event(e['name'])}).toList());
+    return list;
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    print(globalStorage['calendar']);
+    print(globalStorage['calendar'][0]);
+    print(globalStorage['calendar'][0]['date']);
     return Column(children: [
       TableCalendar<Event>(
-        firstDay: DateTime.utc(2020, 10, 16),
-        lastDay: DateTime.utc(2021, 10, 14),
+        firstDay: DateTime.parse(globalStorage['calendar'][0]['date']),
+        lastDay: DateTime.parse(globalStorage['calendar'][globalStorage['calendar'].length - 1]['date']),
         focusedDay: _focusedDay,
         selectedDayPredicate: (day) {
           return isSameDay(_selectedDay, day);

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../login/login.dart';
+import '../../util/fetch.dart';
+import '../../util/storage.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({Key? key}) : super(key: key);
@@ -32,7 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
               ),
               Text(
-                'BattleMage0231',
+                globalStorage['profile']['username'],
                 maxLines: 1,
                 style: TextStyle(
                   fontSize: 24,
@@ -48,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
               ),
               Text(
-                'leyang.zou@student.tdsb.on.ca',
+                globalStorage['profile']['email'],
                 maxLines: 1,
                 style: TextStyle(
                   fontSize: 24,
@@ -64,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
               ),
               Text(
-                'Leyang',
+                globalStorage['profile']['firstname'],
                 maxLines: 1,
                 style: TextStyle(
                   fontSize: 24,
@@ -80,13 +82,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
               ),
               Text(
-                'Zou',
+                globalStorage['profile']['lastname'],
                 maxLines: 1,
                 style: TextStyle(
                   fontSize: 24,
                 ),
               ),
             ]),
+            /*
             Padding(
               padding: EdgeInsets.only(top: 20),
               child: ElevatedButton(
@@ -109,13 +112,16 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
               ),
             ),
+            */
             Padding(
-              padding: EdgeInsets.only(top: 10),
+              padding: EdgeInsets.only(top: 20),
               child: ElevatedButton(
                 child: Text('Log Out'),
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(new MaterialPageRoute(
+                  postLogOut().then((res) {
+                    Navigator.of(context).pushReplacement(new MaterialPageRoute(
                       builder: (BuildContext context) => LogInPage()));
+                  });
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.red),

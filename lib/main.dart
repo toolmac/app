@@ -11,12 +11,6 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ToolMac',
-      /*
-      theme: ThemeData(
-        // put more theme data here later
-        primarySwatch: Colors.blue,
-      ),
-      */
       home: LogInPage(),
     );
   }

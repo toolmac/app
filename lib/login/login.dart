@@ -28,16 +28,13 @@ class _LogInPageState extends State<LogInPage> {
             setState(() {});
           }
         } else {
-          print(response.body);
-          //Map<String, dynamic> data = jsonDecode(response.body);
-          //print('hi');
-          //String token = data["accessToken"];
-          //String refresh = data["refreshToken"];
-          //Future<void> first = storage.write(key: 'token', value: token);
-          //Future<void> second = storage.write(key: 'refresh', value: refresh);
-          //Future.wait([first, second]).then((res) {
-            Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => HomePage()));
-          //});
+          Map<String, dynamic> data = jsonDecode(response.body);
+          String token = data["accessToken"];
+          String refresh = data["refreshToken"];
+          globalStorage['token'] = token;
+          globalStorage['refresh'] = refresh;
+          init();
+          Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => HomePage()));
         }
       },
     ).catchError((error) {
