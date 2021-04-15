@@ -8,25 +8,50 @@ class TimetablePeriod {
       required this.end,
       this.roomCode});
 
-  final int day;
-  final String periodName;
-  final TimeOfDay start;
-  final TimeOfDay end;
-  final int? roomCode;
+  factory TimetablePeriod.clone(TimetablePeriod other) {
+    return TimetablePeriod(
+      day: other.day,
+      periodName: other.periodName,
+      start: other.start,
+      end: other.end,
+      roomCode: other.roomCode,
+    );
+  }
+
+  int day;
+  String periodName;
+  TimeOfDay start;
+  TimeOfDay end;
+  String? roomCode;
 }
 
 class TimetableEntry {
-  const TimetableEntry(
-      {required this.courseCode, this.teacher, this.periods = const []});
+  TimetableEntry(
+      {required this.courseCode, this.teacher, required this.periods});
 
-  final String courseCode;
-  final String? teacher;
-  final List<TimetablePeriod> periods;
+  factory TimetableEntry.clone(TimetableEntry other) {
+    return TimetableEntry(
+      courseCode: other.courseCode,
+      teacher: other.teacher,
+      periods: other.periods.map((TimetablePeriod p) => TimetablePeriod.clone(p)).toList(),
+    );
+  }
+
+  String courseCode;
+  String? teacher;
+  List<TimetablePeriod> periods;
 }
 
 class Timetable {
-  const Timetable({this.semester, this.entries = const []});
+  Timetable({this.semester, required this.entries});
+
+  factory Timetable.clone(Timetable other) {
+    return Timetable(
+      semester: other.semester,
+      entries: other.entries.map((TimetableEntry e) => TimetableEntry.clone(e)).toList(),
+    );
+  }
 
   final int? semester;
-  final List<TimetableEntry> entries;
+  List<TimetableEntry> entries;
 }
